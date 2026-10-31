@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>William & Kiara | 20 mei 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #FBF8F3;
+  --soft-gold: #C9A87C;
+  --antique-gold: #B8956A;
+  --deep: #2C2416;
+  --text: #3D3428;
+  --accent: #8B7355;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  overflow-x: hidden;
+}
+.particles {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+.particle {
+  position: absolute;
+  background: var(--soft-gold);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: float-particle 15s infinite linear;
+}
+@keyframes float-particle {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.4; }
+  90% { opacity: 0.4; }
+  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #1a1612 url('imagine_images/2R3u3.jpg') center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1.4s ease, visibility 1.4s;
+}
+.intro.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.doors-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.door {
+  width: 50%;
+  height: 100%;
+  background: url('imagine_images/LO0Ii.jpg') center/cover no-repeat;
+  transition: transform 2s cubic-bezier(0.77, 0, 0.175, 1);
+  position: absolute;
+  top: 0;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.2);
+}
+.door.left { left: 0; transform-origin: left center; }
+.door.right { right: 0; transform-origin: right center; background-position: right center; }
+.doors-container.open .door.left { transform: translateX(-105%); }
+.doors-container.open .door.right { transform: translateX(105%); }
+.seal {
+  position: absolute;
+  width: 140px;
+  height: auto;
+  z-index: 20;
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.3));
+  animation: seal-pulse 2.5s ease-in-out infinite;
+  cursor: pointer;
+}
+@keyframes seal-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+.key-hint {
+  position: absolute;
+  bottom: 70px;
+  text-align: center;
+  color: var(--soft-gold);
+  z-index: 10;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.08em;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+.hero {
+  min-height: 100vh;
+  background: linear-gradient(180deg, rgba(251,248,243,0.4) 0%, rgba(251,248,243,0.8) 55%, var(--cream) 100%), url('imagine_images/oPMXG.jpg') center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  padding: 3rem 1.5rem;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  background: linear-gradient(to bottom, transparent, var(--cream));
+}
+.monogram {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  letter-spacing: 0.7em;
+  color: var(--soft-gold);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeIn 1.8s 0.5s forwards;
+}
+.names {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3.6rem, 10vw, 7.2rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--deep);
+  line-height: 0.85;
+  margin-bottom: 0.3rem;
+  opacity: 0;
+  animation: fadeIn 2.2s 0.9s forwards;
+}
+.amp {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--soft-gold);
+  font-size: 0.5em;
+  margin: 0 0.1em;
+}
+.scratch-section {
+  margin-top: 1.8rem;
+  text-align: center;
+}
+.scratch-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.7rem;
+  opacity: 0;
+  animation: fadeIn 1s 1.5s forwards;
+}
+#scratchCanvas {
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  max-width: 260px;
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+  background: #fff;
+}
+.date-revealed {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--soft-gold);
+  margin-top: 1rem;
+  opacity: 0;
+  transition: opacity 1s;
+}
+.date-revealed.show { opacity: 1; }
+.invite-text {
+  font-size: 1.05rem;
+  font-weight: 300;
+  max-width: 460px;
+  margin-top: 2rem;
+  line-height: 1.75;
+  opacity: 0;
+  animation: fadeIn 1.8s 1.9s forwards;
+}
+.scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0;
+  animation: fadeIn 1s 2.6s forwards;
+}
+section {
+  padding: 5rem 1.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.3rem, 5vw, 3.6rem);
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 2.2rem;
+  color: var(--deep);
+}
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  text-align: center;
+}
+.detail-card {
+  padding: 1.5rem;
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeIn 0.9s forwards;
+}
+.detail-card:nth-child(1) { animation-delay: 0.15s; }
+.detail-card:nth-child(2) { animation-delay: 0.35s; }
+.detail-card:nth-child(3) { animation-delay: 0.55s; }
+.detail-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  margin-bottom: 0.6rem;
+  color: var(--soft-gold);
+  letter-spacing: 0.04em;
+}
+.dress-code {
+  text-align: center;
+  margin-top: 2.5rem;
+}
+.palette {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.2rem;
+  flex-wrap: wrap;
+}
+.swatch {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+.swatch:hover { transform: scale(1.2); }
+.rings-section {
+  background: url('imagine_images/yl7gS.jpg') center/cover;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.rings-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(251,248,243,0.82);
+}
+.rings-content {
+  position: relative;
+  text-align: center;
+  z-index: 1;
+}
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+.count-item {
+  text-align: center;
+  min-width: 65px;
+}
+.count-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  font-weight: 300;
+  color: var(--deep);
+  display: block;
+}
+.count-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.rsvp-form {
+  max-width: 460px;
+  margin: 0 auto;
+  background: white;
+  padding: 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.07);
+}
+.rsvp-form input, .rsvp-form select, .rsvp-form textarea {
+  width: 100%;
+  padding: 0.9rem;
+  margin-bottom: 0.9rem;
+  border: 1px solid #e8e2d9;
+  background: var(--cream);
+  font-family: inherit;
+  font-size: 0.95rem;
+  border-radius: 4px;
+}
+.rsvp-form button {
+  width: 100%;
+  padding: 1.1rem;
+  background: var(--deep);
+  color: white;
+  border: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 0.4rem;
+}
+.rsvp-form button:hover { background: var(--soft-gold); }
+.floral-banner {
+  width: 100%;
+  height: 260px;
+  background: url('imagine_images/ZqACk.jpg') center/cover;
+  margin: 2.5rem 0;
+}
+footer {
+  text-align: center;
+  padding: 3rem 1.5rem 3.5rem;
+  font-size: 0.85rem;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 600px) {
+  .countdown { gap: 0.8rem; }
+  .count-num { font-size: 2.2rem; }
+  section { padding: 3.5rem 1.2rem; }
+  .names { font-size: 3.4rem; }
+  .seal { width: 110px; }
+}
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<!-- Intro met deuren -->
+<div class="intro" id="intro">
+  <div class="doors-container" id="doors">
+    <div class="door left"></div>
+    <div class="door right"></div>
+    <img src="imagine_images/k4Lxm.jpg" alt="Zegel" class="seal" id="seal">
+    <div class="key-hint">Tik op het zegel om te openen</div>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="monogram">W & K</div>
+  <h1 class="names">William<span class="amp">&</span>Kiara</h1>
+  
+  <div class="scratch-section">
+    <div class="scratch-label">Kras om de datum te onthullen</div>
+    <canvas id="scratchCanvas" width="260" height="80"></canvas>
+    <div class="date-revealed" id="dateRevealed">20 MEI 2027</div>
+  </div>
+
+  <p class="invite-text">Samen met hun families<br>nodigen zij u van harte uit<br>om getuige te zijn van hun huwelijk<br>en deze bijzondere dag met hen te vieren.</p>
+  <div class="scroll-hint">Scroll om verder te gaan</div>
+</section>
+
+<section>
+  <h2>De details</h2>
+  <div class="details-grid">
+    <div class="detail-card">
+      <h3>Ceremonie</h3>
+      <p>Donderdag 20 mei 2027<br>16:00 uur</p>
+      <p style="margin-top:0.7rem; color:var(--accent); font-size:0.9rem;">Locatie volgt</p>
+    </div>
+    <div class="detail-card">
+      <h3>Receptie</h3>
+      <p>Aansluitend op de ceremonie<br>Diner & dans</p>
+      <p style="margin-top:0.7rem; color:var(--accent); font-size:0.9rem;">Black tie optioneel</p>
+    </div>
+    <div class="detail-card">
+      <h3>Locatie</h3>
+      <p>Een prachtige locatie<br>wordt nog bekendgemaakt</p>
+      <p style="margin-top:0.7rem; color:var(--accent); font-size:0.9rem;">Kaart & reisinformatie volgt</p>
+    </div>
+  </div>
+  <div class="dress-code">
+    <h3 style="font-family:'Playfair Display',serif; color:var(--soft-gold); font-size:1.35rem; margin-bottom:0.4rem;">Dresscode</h3>
+    <p>Black tie optioneel · Zachte neutrale en gouden tinten welkom</p>
+    <div class="palette">
+      <div class="swatch" style="background:#FBF8F3;"></div>
+      <div class="swatch" style="background:#C9A87C;"></div>
+      <div class="swatch" style="background:#8B7355;"></div>
+      <div class="swatch" style="background:#2C2416;"></div>
+      <div class="swatch" style="background:#E8DFD0;"></div>
+    </div>
+  </div>
+</section>
+
+<div class="rings-section">
+  <div class="rings-content">
+    <h2 style="margin-bottom:0.4rem;">Nog ... dagen</h2>
+    <div class="countdown" id="countdown">
+      <div class="count-item"><span class="count-num" id="days">—</span><span class="count-label">Dagen</span></div>
+      <div class="count-item"><span class="count-num" id="hours">—</span><span class="count-label">Uren</span></div>
+      <div class="count-item"><span class="count-num" id="minutes">—</span><span class="count-label">Minuten</span></div>
+      <div class="count-item"><span class="count-num" id="seconds">—</span><span class="count-label">Seconden</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="floral-banner"></div>
+
+<section>
+  <h2>Graag een reactie</h2>
+  <form class="rsvp-form" id="rsvpForm">
+    <input type="text" name="name" placeholder="Uw volledige naam" required>
+    <input type="email" name="email" placeholder="E-mailadres" required>
+    <select name="attending" required>
+      <option value="">Komt u?</option>
+      <option value="yes">Met plezier aanwezig</option>
+      <option value="no">Helaas niet aanwezig</option>
+    </select>
+    <input type="number" name="guests" placeholder="Aantal personen" min="1" max="5" value="1">
+    <textarea name="message" placeholder="Bericht aan het bruidspaar (optioneel)" rows="3"></textarea>
+    <button type="submit">Verstuur RSVP</button>
+  </form>
+  <p id="rsvpThanks" style="text-align:center; margin-top:1.8rem; display:none; font-family:'Cormorant Garamond', serif; font-size:1.5rem; color:var(--deep);">Hartelijk dank — we kijken ernaar uit om met u te vieren.</p>
+</section>
+
+<footer>
+  William & Kiara<br>
+  <span style="letter-spacing:0.28em; font-size:0.75rem;">20 MEI 2027</span>
+</footer>
+
+<script>
+// Particles
+const particlesContainer = document.getElementById('particles');
+for (let i = 0; i < 18; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.width = p.style.height = (Math.random() * 6 + 3) + 'px';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.animationDelay = (Math.random() * 15) + 's';
+  p.style.animationDuration = (12 + Math.random() * 10) + 's';
+  particlesContainer.appendChild(p);
+}
+
+// Intro
+const intro = document.getElementById('intro');
+const doors = document.getElementById('doors');
+const seal = document.getElementById('seal');
+function openDoors() {
+  doors.classList.add('open');
+  setTimeout(() => intro.classList.add('hidden'), 1800);
+}
+seal.addEventListener('click', openDoors);
+doors.addEventListener('click', openDoors);
+
+// Scratch
+const canvas = document.getElementById('scratchCanvas');
+const ctx = canvas.getContext('2d');
+const dateRevealed = document.getElementById('dateRevealed');
+
+function initScratch() {
+  ctx.fillStyle = '#C9A87C';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#fff';
+  ctx.font = 'italic 16px Cormorant Garamond';
+  ctx.textAlign = 'center';
+  ctx.fillText('Kras hier', canvas.width/2, canvas.height/2 + 5);
+  ctx.globalAlpha = 0.2;
+  for(let i=0; i<15; i++) {
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, 1.5, 0, Math.PI*2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+initScratch();
+
+let isScratching = false;
+let scratched = 0;
+
+function getPos(e) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+}
+
+function scratch(e) {
+  if (!isScratching) return;
+  e.preventDefault();
+  const pos = getPos(e);
+  ctx.globalCompositeOperation = 'destination-out';
+  ctx.beginPath();
+  ctx.arc(pos.x, pos.y, 20, 0, Math.PI * 2);
+  ctx.fill();
+  scratched++;
+  if (scratched > 70 && !dateRevealed.classList.contains('show')) {
+    dateRevealed.classList.add('show');
+  }
+}
+
+canvas.addEventListener('mousedown', () => isScratching = true);
+canvas.addEventListener('mouseup', () => isScratching = false);
+canvas.addEventListener('mousemove', scratch);
+canvas.addEventListener('touchstart', (e) => { isScratching = true; scratch(e); });
+canvas.addEventListener('touchend', () => isScratching = false);
+canvas.addEventListener('touchmove', scratch);
+
+// Countdown
+const weddingDate = new Date('2027-05-20T16:00:00').getTime();
+
+function updateCountdown() {
+  const now = new Date().getTime();
+  const distance = weddingDate - now;
+
+  if (distance < 0) {
+    document.getElementById('countdown').innerHTML = '<p style="font-size:1.8rem; font-family:\'Cormorant Garamond\',serif;">Vandaag is het zover!</p>';
+    return;
+  }
+
+  document.getElementById('days').textContent = Math.floor(distance / (1000 * 60 * 60 * 24));
+  document.getElementById('hours').textContent = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  document.getElementById('minutes').textContent = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  document.getElementById('seconds').textContent = Math.floor((distance % (1000 * 60)) / 1000);
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  this.style.display = 'none';
+  document.getElementById('rsvpThanks').style.display = 'block';
+});
+</script>
+
+</body>
+</html>
