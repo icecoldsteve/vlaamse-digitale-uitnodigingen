@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knokke | William & Kiara</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root { --cream: #FBF8F3; --gold: #C9A87C; --deep: #2C2416; --accent: #8B7355; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--deep); }
+.hero { min-height:100vh; position:relative; display:flex; align-items:center; justify-content:center; text-align:center; background: linear-gradient(180deg, rgba(251,248,243,0.4), rgba(251,248,243,0.85)), url('imagine_images/5Vzow.jpg') center/cover; }
+#canvas3d { position:absolute; inset:0; z-index:1; }
+.content { position:relative; z-index:2; background:rgba(251,248,243,0.8); backdrop-filter:blur(10px); padding:3rem; border-radius:24px; max-width:640px; }
+h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 8vw, 5.5rem); font-style:italic; font-weight:300; margin-bottom:1rem; }
+.back { position:absolute; top:2rem; left:2rem; z-index:3; color:var(--deep); text-decoration:none; font-size:0.9rem; letter-spacing:0.1em; }
+</style>
+</head>
+<body>
+<a href="vlaamse-uitnodigingen.html" class="back">← Terug</a>
+<section class="hero">
+  <canvas id="canvas3d"></canvas>
+  <div class="content">
+    <h1>Knokke</h1>
+    <p>William & Kiara<br>20 mei 2027<br><small style="opacity:0.7">Klik om de deuren te openen</small></p>
+  </div>
+</section>
+<script>
+const canvas = document.getElementById('canvas3d');
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 100);
+camera.position.z = 6;
+scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+const light = new THREE.DirectionalLight(0xffffff, 1.1);
+light.position.set(5,5,5); scene.add(light);
+
+const doorMat = new THREE.MeshStandardMaterial({ color: 0xC9A87C, metalness: 0.75, roughness: 0.25 });
+const doorGeo = new THREE.BoxGeometry(1.6, 2.8, 0.1);
+const doorLeft = new THREE.Mesh(doorGeo, doorMat);
+doorLeft.position.set(-1.0, 0, 0);
+scene.add(doorLeft);
+const doorRight = new THREE.Mesh(doorGeo, doorMat);
+doorRight.position.set(1.0, 0, 0);
+scene.add(doorRight);
+
+const geo = new THREE.BoxGeometry(1.5, 0.4, 0.8);
+const mat = new THREE.MeshStandardMaterial({ color: 0xC9A87C, metalness: 0.7, roughness: 0.25 });
+const box = new THREE.Mesh(geo, mat);
+box.position.z = -1;
+scene.add(box);
+
+let mouseX = 0, mouseY = 0;
+let doorsOpen = false, doorProgress = 0;
+document.addEventListener('mousemove', (e) => {
+  mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+  mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+});
+canvas.addEventListener('click', () => { doorsOpen = !doorsOpen; });
+
+function animate() {
+  requestAnimationFrame(animate);
+  const target = doorsOpen ? 1 : 0;
+  doorProgress += (target - doorProgress) * 0.05;
+  doorLeft.position.x = -1.0 - doorProgress * 1.5;
+  doorRight.position.x = 1.0 + doorProgress * 1.5;
+  doorLeft.rotation.y = -doorProgress * 0.35;
+  doorRight.rotation.y = doorProgress * 0.35;
+
+  box.rotation.y += 0.01 + mouseX * 0.025;
+  box.rotation.x = Math.sin(Date.now() * 0.001) * 0.2 + mouseY * 0.15;
+  box.position.x = mouseX * 0.4;
+  box.position.y = mouseY * 0.25;
+  renderer.render(scene, camera);
+}
+animate();
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>
