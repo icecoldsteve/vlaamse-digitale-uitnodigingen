@@ -1,1 +1,385 @@
-PLACEHOLDER
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta name="description" content="Exclusieve digitale huwelijksuitnodigingen voor William & Kiara met 3D-animaties, geïnspireerd op West- en Oost-Vlaamse landmarks. Volledig in het Nederlands.">
+<meta name="theme-color" content="#FBF8F3">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>">
+<title>Vlaamse Digitale Uitnodigingen | William & Kiara</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root { --cream: #FBF8F3; --gold: #C9A87C; --deep: #2C2416; --accent: #8B7355; --soft: #F5F0E8; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--deep); overflow-x:hidden; }
+.hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:2rem; position:relative; background: linear-gradient(180deg, #FBF8F3 0%, #F5F0E8 100%); }
+#canvas3d { position:absolute; inset:0; z-index:0; }
+.hero-content { position:relative; z-index:1; background:rgba(251,248,243,0.82); backdrop-filter:blur(12px); padding:3.5rem 2.5rem; border-radius:28px; max-width:720px; box-shadow:0 20px 60px rgba(0,0,0,0.08); border:1px solid rgba(201,168,124,0.2); }
+.hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(3.2rem, 8vw, 6.5rem); font-weight:300; font-style:italic; margin-bottom:1rem; line-height:0.95; animation: fadeUp 1.2s ease; }
+.hero p { font-size:1.15rem; max-width:560px; margin:0 auto 2.2rem; line-height:1.7; animation: fadeUp 1.5s 0.3s both; color:var(--accent); }
+.btn { background: var(--deep); color:white; padding:1.1rem 2.8rem; border:none; letter-spacing:0.18em; text-transform:uppercase; font-size:0.8rem; cursor:pointer; transition:0.3s; text-decoration:none; display:inline-block; border-radius:4px; }
+.btn:hover { background: var(--gold); transform:translateY(-2px); }
+.designs { padding:7rem 2rem; max-width:1200px; margin:0 auto; }
+.designs h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem, 5vw, 4.2rem); text-align:center; margin-bottom:3.5rem; }
+.grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:2.2rem; }
+.card { background:white; border-radius:16px; overflow:hidden; box-shadow:0 12px 40px rgba(0,0,0,0.07); transition:transform 0.45s cubic-bezier(0.23,1,0.32,1), box-shadow 0.45s; cursor:pointer; border:1px solid rgba(0,0,0,0.03); }
+.card:hover { transform:translateY(-10px); box-shadow:0 25px 60px rgba(0,0,0,0.12); }
+.card img { width:100%; height:240px; object-fit:cover; transition:transform 0.6s; }
+.card:hover img { transform:scale(1.05); }
+.card-content { padding:1.8rem; }
+.card h3 { font-family: 'Playfair Display', serif; font-size:1.7rem; margin-bottom:0.5rem; color:var(--gold); }
+.card p { font-size:0.95rem; color:var(--accent); line-height:1.5; }
+.features { background: var(--deep); color:var(--cream); padding:6rem 2rem; text-align:center; }
+.features h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 4vw, 3.5rem); margin-bottom:2.5rem; }
+.features-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:2.5rem; max-width:1000px; margin:0 auto; }
+.feature { padding:1.2rem; }
+.feature h4 { font-size:1.25rem; margin-bottom:0.6rem; color:var(--gold); font-family:'Playfair Display',serif; }
+footer { text-align:center; padding:3.5rem 2rem; background:var(--cream); color:var(--accent); font-size:0.9rem; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(40px); } to { opacity:1; transform:translateY(0); } }
+@media (max-width:600px) { .hero-content { padding:2.2rem 1.4rem; } .hero h1 { font-size:2.8rem; } }
+</style>
+</head>
+<body>
+<section class="hero">
+  <canvas id="canvas3d"></canvas>
+  <div class="hero-content">
+    <h1>Digitale Uitnodigingen<br>voor Vlaanderen</h1>
+    <p>Exclusieve, interactieve huwelijksuitnodigingen met 3D-elementen, geïnspireerd op West- en Oost-Vlaamse landmarks. Volledig in het Nederlands — met RSVP, countdown en luxe animaties.</p>
+    <a href="#designs" class="btn">Ontdek de 5 designs</a>
+  </div>
+</section>
+
+<section class="designs" id="designs">
+  <h2>Vijf unieke Vlaamse designs</h2>
+  <div class="grid">
+    <div class="card" onclick="window.location='brugge.html'">
+      <img src="imagine_images/sG1FP.jpg" alt="Brugge">
+      <div class="card-content">
+        <h3>Brugge</h3>
+        <p>Romantische grachten en het Belfort. Kant en gouden accenten.</p>
+      </div>
+    </div>
+    <div class="card" onclick="window.location='gent.html'">
+      <img src="imagine_images/wLzza.jpg" alt="Gent">
+      <div class="card-content">
+        <h3>Gent</h3>
+        <p>Het Gravensteen en de historische sfeer van Oost-Vlaanderen.</p>
+      </div>
+    </div>
+    <div class="card" onclick="window.location='oostende.html'">
+      <img src="imagine_images/ubu4B.jpg" alt="Oostende">
+      <div class="card-content">
+        <h3>Oostende</h3>
+        <p>Kust, pier en zonsondergang. Elegant en verfrissend.</p>
+      </div>
+    </div>
+    <div class="card" onclick="window.location='knokke.html'">
+      <img src="imagine_images/5Vzow.jpg" alt="Knokke">
+      <div class="card-content">
+        <h3>Knokke</h3>
+        <p>Luxe zeepromenade en verfijnde Belgische kust.</p>
+      </div>
+    </div>
+    <div class="card" onclick="window.location='tuin.html'">
+      <img src="imagine_images/4tIlB.jpg" alt="Vlaamse Tuin">
+      <div class="card-content">
+        <h3>Vlaamse Tuin</h3>
+        <p>Weelderige tuinen en romantische bloemen. Tijdloos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features">
+  <h2>Alles wat je nodig hebt</h2>
+  <div class="features-grid">
+    <div class="feature"><h4>3D-animaties</h4><p>Ringen, deuren en meer</p></div>
+    <div class="feature"><h4>Interactieve RSVP</h4><p>Automatische tracking van antwoorden</p></div>
+    <div class="feature"><h4>Live countdown</h4><p>Dagen, uren, minuten tot de grote dag</p></div>
+    <div class="feature"><h4>Kras-to-reveal</h4><p>Speelse datum-onthulling</p></div>
+    <div class="feature"><h4>Deuren & zegel</h4><p>Luxe openingsanimatie</p></div>
+    <div class="feature"><h4>Volledig Nederlands</h4><p>Aangepast voor het Belgische publiek</p></div>
+  </div>
+</section>
+
+<footer>
+  William & Kiara · 20 mei 2027<br>
+  Vlaamse Digitale Uitnodigingen
+</footer>
+
+<script>
+// Error boundary for Three.js
+window.addEventListener('error', (e) => {
+  if (e.message && e.message.includes('THREE')) {
+    console.warn('Three.js failed to load, falling back to static background');
+    document.getElementById('canvas3d').style.display = 'none';
+  }
+});
+const canvas = document.getElementById('canvas3d');
+const renderer = new THREE.WebGLRenderer({ 
+  canvas, 
+  alpha: true, 
+  antialias: true,
+  powerPreference: "high-performance"
+});
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.2;
+renderer.outputEncoding = THREE.sRGBEncoding;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.z = 7;
+
+// Better lighting setup
+const ambient = new THREE.AmbientLight(0xfff5e8, 0.6);
+scene.add(ambient);
+
+const keyLight = new THREE.DirectionalLight(0xffffff, 1.8);
+keyLight.position.set(5, 8, 5);
+keyLight.castShadow = true;
+scene.add(keyLight);
+
+const fillLight = new THREE.DirectionalLight(0xfff0d0, 0.8);
+fillLight.position.set(-4, 3, 4);
+scene.add(fillLight);
+
+const rimLight = new THREE.DirectionalLight(0xffe4b5, 0.5);
+rimLight.position.set(0, -2, -3);
+scene.add(rimLight);
+
+// Premium gold material
+const goldMat = new THREE.MeshStandardMaterial({
+  color: 0xC9A87C,
+  metalness: 0.95,
+  roughness: 0.08,
+  envMapIntensity: 1.2
+});
+
+const softGoldMat = new THREE.MeshStandardMaterial({
+  color: 0xE8D5B5,
+  metalness: 0.88,
+  roughness: 0.15,
+  envMapIntensity: 1.0
+});
+
+// High-quality doors with beveled edges
+const doorGeo = new THREE.BoxGeometry(1.9, 3.4, 0.15, 1, 1, 1);
+const doorLeft = new THREE.Mesh(doorGeo, goldMat.clone());
+doorLeft.position.set(-1.15, 0, 0);
+doorLeft.castShadow = true;
+scene.add(doorLeft);
+
+const doorRight = new THREE.Mesh(doorGeo, goldMat.clone());
+doorRight.position.set(1.15, 0, 0);
+doorRight.castShadow = true;
+scene.add(doorRight);
+
+// Decorative door frames
+const frameGeo = new THREE.BoxGeometry(0.08, 3.5, 0.18);
+const frameLeft = new THREE.Mesh(frameGeo, softGoldMat);
+frameLeft.position.set(-2.05, 0, 0);
+scene.add(frameLeft);
+const frameRight = new THREE.Mesh(frameGeo, softGoldMat);
+frameRight.position.set(2.05, 0, 0);
+scene.add(frameRight);
+
+// High-quality seal
+const sealGroup = new THREE.Group();
+const sealGeo = new THREE.CylinderGeometry(0.55, 0.55, 0.12, 64);
+const seal = new THREE.Mesh(sealGeo, goldMat.clone());
+sealGroup.add(seal);
+
+const innerGeo = new THREE.TorusGeometry(0.32, 0.035, 24, 64);
+const innerRing = new THREE.Mesh(innerGeo, softGoldMat.clone());
+innerRing.rotation.x = Math.PI / 2;
+sealGroup.add(innerRing);
+
+// Monogram dots
+for (let i = 0; i < 12; i++) {
+  const dot = new THREE.Mesh(
+    new THREE.SphereGeometry(0.025, 16, 16),
+    softGoldMat.clone()
+  );
+  const angle = (i / 12) * Math.PI * 2;
+  dot.position.set(Math.cos(angle) * 0.42, Math.sin(angle) * 0.42, 0.07);
+  sealGroup.add(dot);
+}
+scene.add(sealGroup);
+
+// High-quality rings with more segments
+const ringGeo1 = new THREE.TorusGeometry(1.4, 0.22, 48, 128);
+const ring1 = new THREE.Mesh(ringGeo1, goldMat.clone());
+ring1.position.set(-1.6, 0, -1.5);
+ring1.castShadow = true;
+scene.add(ring1);
+
+const ringGeo2 = new THREE.TorusGeometry(1.1, 0.16, 48, 128);
+const ring2 = new THREE.Mesh(ringGeo2, softGoldMat.clone());
+ring2.position.set(1.7, 0.5, -1.5);
+ring2.castShadow = true;
+scene.add(ring2);
+
+// Floating particles
+const particles = [];
+const pGeo = new THREE.SphereGeometry(0.04, 8, 8);
+const pMat = new THREE.MeshStandardMaterial({ color: 0xC9A87C, metalness: 0.6, roughness: 0.3 });
+for (let i = 0; i < 12; i++) {
+  const p = new THREE.Mesh(pGeo, pMat);
+  p.position.set((Math.random()-0.5)*6, (Math.random()-0.5)*4, (Math.random()-0.5)*2 - 0.5);
+  p.userData = { speed: 0.002 + Math.random()*0.003, offset: Math.random()*Math.PI*2 };
+  scene.add(p);
+  particles.push(p);
+}
+
+// Interaction state
+let mouseX = 0, mouseY = 0;
+let targetX = 0, targetY = 0;
+let hoverBoost = 0;
+let doorsOpen = false;
+let doorProgress = 0;
+let scrollProgress = 0;
+let burstParticles = [];
+let lightIntensity = 1.3;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+  mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+});
+
+canvas.addEventListener('click', () => {
+  doorsOpen = !doorsOpen;
+  if (doorsOpen) createBurst();
+});
+
+// Card hover with unique effects
+const cards = document.querySelectorAll('.card');
+cards.forEach((card, index) => {
+  card.addEventListener('mouseenter', () => { 
+    hoverBoost = 1; 
+    card.dataset.hover = index;
+  });
+  card.addEventListener('mouseleave', () => { 
+    hoverBoost = 0; 
+    delete card.dataset.hover;
+  });
+});
+
+// Scroll-driven depth
+window.addEventListener('scroll', () => {
+  scrollProgress = Math.min(window.scrollY / (window.innerHeight * 0.8), 1);
+});
+
+function createBurst() {
+  for (let i = 0; i < 20; i++) {
+    const p = new THREE.Mesh(
+      new THREE.SphereGeometry(0.03, 6, 6),
+      new THREE.MeshStandardMaterial({ color: 0xC9A87C, metalness: 0.7 })
+    );
+    p.position.copy(sealGroup.position);
+    p.userData = {
+      vx: (Math.random() - 0.5) * 0.15,
+      vy: (Math.random() - 0.5) * 0.15,
+      vz: Math.random() * 0.1 + 0.05,
+      life: 1
+    };
+    scene.add(p);
+    burstParticles.push(p);
+  }
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  targetX += (mouseX - targetX) * 0.05;
+  targetY += (mouseY - targetY) * 0.05;
+  const hover = hoverBoost * 0.4;
+
+  // Camera breathing + mouse parallax
+  camera.position.x = targetX * 0.4;
+  camera.position.y = targetY * 0.25 + Math.sin(Date.now() * 0.0008) * 0.1;
+  camera.lookAt(0, 0, 0);
+
+  // Scroll-driven depth
+  const depth = 1 + scrollProgress * 1.5;
+  camera.position.z = 7 + scrollProgress * 2;
+
+  // Door animation - smoother and more dramatic
+  const targetDoor = doorsOpen ? 1 : 0;
+  doorProgress += (targetDoor - doorProgress) * 0.035;
+  doorLeft.position.x = -1.15 - doorProgress * 1.8;
+  doorRight.position.x = 1.15 + doorProgress * 1.8;
+  doorLeft.rotation.y = -doorProgress * 0.5;
+  doorRight.rotation.y = doorProgress * 0.5;
+  frameLeft.position.x = -2.05 - doorProgress * 0.3;
+  frameRight.position.x = 2.05 + doorProgress * 0.3;
+
+  // Light reaction
+  lightIntensity += ((1.8 + hover * 0.5) - lightIntensity) * 0.04;
+  keyLight.intensity = lightIntensity;
+
+  // Seal animation
+  sealGroup.position.z = -doorProgress * 0.3;
+  sealGroup.rotation.z = targetX * 0.4 + Math.sin(Date.now() * 0.0015) * 0.15;
+  sealGroup.rotation.y = Math.sin(Date.now() * 0.001) * 0.2;
+  const sealScale = 1 + Math.sin(Date.now() * 0.003) * 0.04 + hover * 0.08;
+  sealGroup.scale.setScalar(sealScale);
+  innerRing.rotation.z += 0.01;
+
+  // Rings with hover-specific tint
+  ring1.rotation.x += 0.005 + targetY * 0.02;
+  ring1.rotation.y += 0.008 + targetX * 0.03;
+  ring2.rotation.x -= 0.004 + targetY * 0.015;
+  ring2.rotation.y += 0.007 + targetX * 0.025;
+  ring1.position.x = -1.4 + targetX * 0.5;
+  ring1.position.y = targetY * 0.35;
+  ring2.position.x = 1.5 + targetX * 0.4;
+  ring2.position.y = 0.4 + targetY * 0.3;
+
+  // Hover color shift
+  if (hoverBoost > 0.5) {
+    const cardIndex = [...cards].findIndex(c => c.dataset.hover !== undefined);
+    if (cardIndex === 2) { // Oostende
+      ring1.material.color.setHex(0xA8C5D4);
+    } else if (cardIndex === 0) { // Brugge
+      ring1.material.color.setHex(0xD4B896);
+    } else {
+      ring1.material.color.setHex(0xC9A87C);
+    }
+  } else {
+    ring1.material.color.setHex(0xC9A87C);
+  }
+
+  // Particles
+  particles.forEach((p, i) => {
+    p.position.y += Math.sin(Date.now()*0.001 + p.userData.offset) * p.userData.speed;
+    p.position.x += Math.cos(Date.now()*0.0008 + i) * 0.002;
+  });
+
+  // Burst particles
+  burstParticles = burstParticles.filter(p => {
+    p.position.x += p.userData.vx;
+    p.position.y += p.userData.vy;
+    p.position.z += p.userData.vz;
+    p.userData.life -= 0.015;
+    p.scale.setScalar(p.userData.life);
+    if (p.userData.life <= 0) {
+      scene.remove(p);
+      return false;
+    }
+    return true;
+  });
+
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>
